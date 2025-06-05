@@ -1,0 +1,29 @@
+{
+	"folders":
+	[
+		{
+			"path": ".",
+		},
+		{
+			"name": "egui",
+			"path": "C:\\gamedev\\crates\\egui-0.31.1",
+			"file_exclude_patterns": [
+				"Cargo.toml",
+				"*.orig",
+				".cargo_vcs_info.json",
+			],
+		},
+		{
+			"name": "eframe",
+			"path": "C:\\gamedev\\crates\\eframe-0.31.1",
+			"file_exclude_patterns": [
+				"Cargo.toml",
+				"*.orig",
+				".cargo_vcs_info.json",
+			],
+			"folder_exclude_patterns": [
+				"data",
+			],
+		},
+	],
+}

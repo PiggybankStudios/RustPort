@@ -1,0 +1,20 @@
+[package]
+name = "RustPort"
+authors = ["Taylor Robbins <robbitay@gmail.com>"]
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.87"
+
+[dependencies]
+egui = "0.31.1" # https://docs.rs/egui/0.31.1/egui/
+eframe = "0.31.1"
+
+# For image support:
+egui_extras = { version = "0.31.1", features = ["default", "image"] }
+
+# A logging implementation for `log` which is configured via environment variable
+# Set RUST_LOG=trace/debug/info/warn/error
+env_logger = { version = "0.10", default-features = false, features = [
+    "auto-color",
+    "humantime",
+]}
