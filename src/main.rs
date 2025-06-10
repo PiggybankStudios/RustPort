@@ -1,7 +1,12 @@
+#![allow(dead_code)]
+#![allow(unused_imports)]
 
 use eframe::egui;
+use eframe::egui::{Vec2, vec2};
 
-fn main()
+const DEBUG_BUILD: bool = true;
+
+fn main() -> eframe::Result
 {
 	env_logger::init(); //log to stderr (if you run with RUST_LOG=debug)
 	
@@ -19,13 +24,14 @@ fn main()
 			egui_extras::install_image_loaders(&cc.egui_ctx); //gives us image support
 			Ok(Box::<MyApp>::default())
 		})
-	);
+	)
 }
 
 struct MyApp
 {
 	name: String,
 	age: u32,
+	lines: Vec<String>,
 }
 
 impl Default for MyApp
@@ -35,6 +41,7 @@ impl Default for MyApp
 		return MyApp {
 			name: "Taylor".to_owned(),
 			age: 39,
+			lines: vec![],
 		};
 	}
 }
@@ -46,21 +53,51 @@ impl eframe::App for MyApp
 	{
 		egui::CentralPanel::default().show(context, |ui|
 		{
-			ui.heading("Rustport");
+			// +==============================+
+			// |        Render Topbar         |
+			// +==============================+
+			egui::TopBottomPanel::top("topbar")
+			.show_inside(ui, |ui| {
+				ui.horizontal(|ui| {
+					
+					// let (rect, _response) = ui.allocate_at_least(vec2(32.0, 32.0), egui::Sense::hover());
+					
+					if ui.button("Open").clicked()
+					{
+						ui.set_width(50.0);
+						println!("Open button was clicked!");
+					}
+					
+					if ui.button("Settings").clicked()
+					{
+						println!("Settings button was clicked!");
+					}
+					if ui.button("Info").clicked()
+					{
+						println!("Info button was clicked!");
+					}
+					let mut is_checked: bool = false;
+					ui.checkbox(&mut is_checked, "Test");
+				});
+			});
 			
-			ui.horizontal(|ui| {
+			ui.horizontal(|ui|
+			{
 				let name_label = ui.label("Your name: ");
 				ui.text_edit_singleline(&mut self.name)
 					.labelled_by(name_label.id);
 			});
 			
-			ui.add(egui::Slider::new(&mut self.age, 0..=120).text("age"));
-			
-			if ui.button("Increment").clicked() { self.age += 1; }
-			
-			ui.label(format!("Hello {}, age {}", self.name, self.age));
-			
-			ui.image(egui::include_image!("F:\\test.png"));
+			egui::ScrollArea::vertical().show(ui, |ui|
+			{
+				ui.add(egui::Slider::new(&mut self.age, 0..=120).text("age"));
+				
+				if ui.button("Increment").clicked() { self.age += 1; }
+				
+				ui.image(egui::include_image!("F:\\test.png"));
+				
+				ui.label(format!("Hello {}, age {}", self.name, self.age));
+			});
 		});
 	}
 }

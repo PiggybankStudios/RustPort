@@ -6,7 +6,7 @@ edition = "2021"
 rust-version = "1.87"
 
 [dependencies]
-egui = "0.31.1" # https://docs.rs/egui/0.31.1/egui/
+egui = "0.31.1" # https://docs.rs/egui/0.31.1/egui/    Demo https://www.egui.rs/
 eframe = "0.31.1"
 
 # For image support:
