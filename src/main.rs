@@ -1,5 +1,16 @@
+#![allow(non_snake_case)]
 #![allow(dead_code)]
 #![allow(unused_imports)]
+#![allow(unused_parens)]
+#![allow(unused_variables)]
+#![allow(unused_mut)]
+
+use std::ffi::CString;
+use std::ptr;
+use std::mem::{size_of, zeroed};
+
+use winapi::um::{winnt, winreg};
+use winapi::shared::{winerror, minwindef::FILETIME, minwindef::DWORD};
 
 use eframe::egui;
 use eframe::egui::{Vec2, vec2};
@@ -27,26 +38,102 @@ fn main() -> eframe::Result
 	)
 }
 
-struct MyApp
+struct MyApp<'a>
 {
 	name: String,
 	age: u32,
 	lines: Vec<String>,
+	icon4: egui::ImageSource<'a>,
 }
 
-impl Default for MyApp
+impl<'a> Default for MyApp<'a>
 {
-	fn default() -> MyApp
+	fn default() -> MyApp<'a>
 	{
 		return MyApp {
 			name: "Taylor".to_owned(),
 			age: 39,
 			lines: vec![],
+			icon4: egui::include_image!("..\\data\\buttonIcon4.png").to_owned(),
 		};
 	}
 }
 
-impl eframe::App for MyApp
+fn EnumerateAvailableComPorts()
+{
+	unsafe
+	{
+		let keyCStr = CString::new("HARDWARE\\DEVICEMAP\\SERIALCOMM").unwrap(); //You'll find this under HKEY_LOCAL_MACHINE in regedit
+		let mut regHandle = ptr::null_mut();
+		
+		let openResult = winreg::RegOpenKeyExA(
+			winreg::HKEY_LOCAL_MACHINE,
+			keyCStr.as_ptr(),
+			0,
+			winnt::KEY_READ,
+			&mut regHandle
+		);
+		
+		if (openResult == winerror::ERROR_SUCCESS as i32)
+		{
+			let mut classNameBuffer = vec![0u8;256];
+			let mut classNameLength: DWORD = classNameBuffer.len() as DWORD;
+			let mut numSubkeys: DWORD = 0;
+			let mut numSubkeysLength: DWORD = 0;
+			let mut maxClassLength: DWORD = 0;
+			let mut numValues: DWORD = 0;
+			let mut maxValueNameLength: DWORD = 0;
+			let mut maxValuesLength: DWORD = 0;
+			let mut securityDescriptor: DWORD = 0;
+			let mut lastWriteTime: FILETIME = zeroed();
+			
+			let queryResult = winreg::RegQueryInfoKeyA(
+				regHandle,
+				classNameBuffer.as_mut_ptr() as *mut winnt::CHAR,
+				&mut classNameLength as *mut DWORD,
+				ptr::null_mut(),
+				&mut numSubkeys as *mut DWORD,
+				&mut numSubkeysLength as *mut DWORD,
+				&mut maxClassLength as *mut DWORD,
+				&mut numValues as *mut DWORD,
+				&mut maxValueNameLength as *mut DWORD,
+				&mut maxValuesLength as *mut DWORD,
+				&mut securityDescriptor as *mut DWORD,
+				&mut lastWriteTime as *mut FILETIME
+			);
+			
+			if (queryResult == winerror::ERROR_SUCCESS as i32)
+			{
+				//numSubkeys = 0 numSubkeysLength = 0 maxClassLength = 0 numValues = 2 maxValueNameLength = 17 maxValuesLength = 10 securityDescriptor = 220
+				// println!("numSubkeys = {} numSubkeysLength = {} maxClassLength = {} numValues = {} maxValueNameLength = {} maxValuesLength = {} securityDescriptor = {}",
+				// 	numSubkeys,
+				// 	numSubkeysLength,
+				// 	maxClassLength,
+				// 	numValues,
+				// 	maxValueNameLength,
+				// 	maxValuesLength,
+				// 	securityDescriptor);
+				
+				let mut valueBuffer = vec![0u8;256];
+				let mut valueBufferLength = valueBuffer.len() as DWORD;
+				let mut dataBuffer = vec![0u8;256];
+				let mut dataBufferLength = dataBuffer.len() as DWORD;
+				
+				for vIndex in 0..numValues
+				{
+					println!("Checking value[{}]", vIndex);
+				}
+			}
+			else
+			{
+				println!("QueryResult: {}", queryResult);
+			}
+		}
+		else { println!("Failed to open registry key: {}", openResult); }
+	}
+}
+
+impl<'a> eframe::App for MyApp<'a>
 {
 	#[allow(unused_variables)]
 	fn update(&mut self, context: &egui::Context, frame: &mut eframe::Frame)
@@ -71,6 +158,7 @@ impl eframe::App for MyApp
 					if ui.button("Settings").clicked()
 					{
 						println!("Settings button was clicked!");
+						EnumerateAvailableComPorts();
 					}
 					if ui.button("Info").clicked()
 					{
@@ -94,7 +182,8 @@ impl eframe::App for MyApp
 				
 				if ui.button("Increment").clicked() { self.age += 1; }
 				
-				ui.image(egui::include_image!("F:\\test.png"));
+				
+				ui.image(self.icon4.clone());
 				
 				ui.label(format!("Hello {}, age {}", self.name, self.age));
 			});
