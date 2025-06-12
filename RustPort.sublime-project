@@ -3,10 +3,13 @@
 	[
 		{
 			"path": ".",
+			"folder_exclude_patterns": [
+				"target",
+			],
 		},
 		{
 			"name": "egui",
-			"path": "C:\\gamedev\\crates\\egui-0.31.1",
+			"path": "..\\..\\crates\\egui-0.31.1",
 			"file_exclude_patterns": [
 				"Cargo.toml",
 				"*.orig",
@@ -15,7 +18,7 @@
 		},
 		{
 			"name": "eframe",
-			"path": "C:\\gamedev\\crates\\eframe-0.31.1",
+			"path": "..\\..\\crates\\eframe-0.31.1",
 			"file_exclude_patterns": [
 				"Cargo.toml",
 				"*.orig",
@@ -27,7 +30,7 @@
 		},
 		{
 			"name": "egui_extras",
-			"path": "C:\\gamedev\\crates\\egui_extras-0.31.1",
+			"path": "..\\..\\crates\\egui_extras-0.31.1",
 			"file_exclude_patterns": [
 				"Cargo.toml",
 				"*.orig",

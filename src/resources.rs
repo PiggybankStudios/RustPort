@@ -1,3 +1,4 @@
+#![allow(non_upper_case_globals)]
 
 pub const ButtonIcon1: &[u8] = include_bytes!("..\\data\\buttonIcon1.png");
 pub const ButtonIcon2: &[u8] = include_bytes!("..\\data\\buttonIcon2.png");

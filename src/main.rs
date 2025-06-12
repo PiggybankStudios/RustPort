@@ -35,28 +35,33 @@ fn main() -> eframe::Result
 	)
 }
 
-struct MyApp
+struct MyApp<'a>
 {
 	lines: Vec<String>,
-	portIcon: egui::ColorImage,
-	settingsIcon: egui::ColorImage,
-	infoIcon: egui::ColorImage,
+	portIcon: egui::ImageSource<'a>,
+	settingsIcon: egui::ImageSource<'a>,
+	infoIcon: egui::ImageSource<'a>,
 }
 
-impl Default for MyApp
+impl<'a> Default for MyApp<'a>
 {
-	fn default() -> MyApp
+	fn default() -> MyApp<'a>
 	{
+		let mut lines: Vec<String> = vec![];
+		for lIndex in 0..100
+		{
+			lines.push(format!("Line {}", lIndex+1).to_string());
+		}
 		return MyApp {
-			lines: vec![],
-			portIcon:     egui_extras::image::load_image_bytes(resources::ButtonIcon1).expect("Failed to load portIcon").to_owned(),
-			settingsIcon: egui_extras::image::load_image_bytes(resources::ButtonIcon2).expect("Failed to load settingsIcon").to_owned(),
-			infoIcon:     egui_extras::image::load_image_bytes(resources::ButtonIcon3).expect("Failed to load infoIcon").to_owned(),
+			lines: lines,
+			portIcon:     egui::include_image!("..\\data\\buttonIcon4.png").to_owned(),
+			settingsIcon: egui::include_image!("..\\data\\buttonIcon5.png").to_owned(),
+			infoIcon:     egui::include_image!("..\\data\\buttonIcon2.png").to_owned(),
 		};
 	}
 }
 
-impl eframe::App for MyApp
+impl<'a> eframe::App for MyApp<'a>
 {
 	#[allow(unused_variables)]
 	fn update(&mut self, context: &egui::Context, frame: &mut eframe::Frame)
@@ -76,7 +81,7 @@ impl eframe::App for MyApp
 					// |       Open COM Button        |
 					// +==============================+
 					if (ui.add_sized([40.0, 40.0],
-						egui::ImageButton::new(egui::SizedTexture::from(self.portIcon)))
+						egui::ImageButton::new(self.portIcon.clone()))
 						.clicked())
 					{
 						println!("You clicked the COM button!");
@@ -87,7 +92,7 @@ impl eframe::App for MyApp
 					// |       Settings Button        |
 					// +==============================+
 					if (ui.add_sized([40.0, 40.0],
-						egui::ImageButton::new(egui::SizedTexture::from(self.settingsIcon)))
+						egui::ImageButton::new(self.settingsIcon.clone()))
 						.clicked())
 					{
 						println!("You clicked the Settings button!");
@@ -97,10 +102,11 @@ impl eframe::App for MyApp
 					// |         Info Button          |
 					// +==============================+
 					if (ui.add_sized([40.0, 40.0],
-						egui::ImageButton::new(egui::SizedTexture::from(self.infoIcon)))
+						egui::ImageButton::new(self.infoIcon.clone()))
 						.clicked())
 					{
 						println!("You clicked the Info button!");
+						self.lines.push(format!("New Line {}", self.lines.len()));
 					}
 				});
 				ui.add_space(10.0);
@@ -109,11 +115,7 @@ impl eframe::App for MyApp
 			egui::TopBottomPanel::bottom("bottombar")
 			.show_inside(ui, |ui| {
 				ui.horizontal(|ui| {
-					ui.label("Status: Loading...");
-					ui.label("Status: Loading...");
-					ui.label("Status: Loading...");
-					ui.label("Status: Loading...");
-					ui.label("Status: Loading...");
+					ui.label(format!("Status: {} Line{}", self.lines.len(), if self.lines.len() == 1 {""} else {"s"}));
 				});
 			});
 			
@@ -121,9 +123,9 @@ impl eframe::App for MyApp
 			.auto_shrink(false)
 			.show(ui, |ui|
 			{
-				for lIndex in 0..10
+				for line in &self.lines
 				{
-					ui.label(format!("Line {}", lIndex));
+					ui.label(line);
 				}
 			});
 		});
