@@ -25,5 +25,14 @@
 				"data",
 			],
 		},
+		{
+			"name": "egui_extras",
+			"path": "C:\\gamedev\\crates\\egui_extras-0.31.1",
+			"file_exclude_patterns": [
+				"Cargo.toml",
+				"*.orig",
+				".cargo_vcs_info.json",
+			],
+		},
 	],
 }
