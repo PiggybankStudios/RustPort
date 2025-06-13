@@ -43,6 +43,9 @@ struct MyApp<'a>
 	portIcon: egui::ImageSource<'a>,
 	settingsIcon: egui::ImageSource<'a>,
 	infoIcon: egui::ImageSource<'a>,
+	buttonBackground: egui::ImageSource<'a>,
+	buttonHighlight: egui::ImageSource<'a>,
+	scroll_to_end: bool,
 }
 
 impl<'a> Default for MyApp<'a>
@@ -56,9 +59,12 @@ impl<'a> Default for MyApp<'a>
 		}
 		return MyApp {
 			lines: lines,
-			portIcon:     egui::include_image!("..\\data\\buttonIcon4.png").to_owned(),
-			settingsIcon: egui::include_image!("..\\data\\buttonIcon5.png").to_owned(),
-			infoIcon:     egui::include_image!("..\\data\\buttonIcon2.png").to_owned(),
+			portIcon:         egui::include_image!("..\\data\\buttonIcon4.png").to_owned(),
+			settingsIcon:     egui::include_image!("..\\data\\buttonIcon5.png").to_owned(),
+			infoIcon:         egui::include_image!("..\\data\\buttonIcon2.png").to_owned(),
+			buttonBackground: egui::include_image!("..\\data\\buttonBase.png").to_owned(),
+			buttonHighlight:  egui::include_image!("..\\data\\buttonLighten.png").to_owned(),
+			scroll_to_end: false,
 		};
 	}
 }
@@ -70,6 +76,13 @@ impl<'a> eframe::App for MyApp<'a>
 	{
 		egui::CentralPanel::default().show(context, |ui|
 		{
+			let mut main_scroll_area = egui::ScrollArea::both();
+			if (self.scroll_to_end)
+			{
+				self.scroll_to_end = false;
+				main_scroll_area = main_scroll_area.vertical_scroll_offset(100000.0);
+			}
+			
 			// +==============================+
 			// |        Render Topbar         |
 			// +==============================+
@@ -83,7 +96,7 @@ impl<'a> eframe::App for MyApp<'a>
 					// |       Open COM Button        |
 					// +==============================+
 					if (ui.add_sized([40.0, 40.0],
-						CircleButton::new(self.portIcon.clone()))
+						CircleButton::new(self.portIcon.clone(), self.buttonBackground.clone(), self.buttonHighlight.clone()))
 						.clicked())
 					{
 						println!("You clicked the COM button!");
@@ -94,17 +107,18 @@ impl<'a> eframe::App for MyApp<'a>
 					// |       Settings Button        |
 					// +==============================+
 					if (ui.add_sized([40.0, 40.0],
-						CircleButton::new(self.settingsIcon.clone()))
+						CircleButton::new(self.settingsIcon.clone(), self.buttonBackground.clone(), self.buttonHighlight.clone()))
 						.clicked())
 					{
 						println!("You clicked the Settings button!");
+						self.scroll_to_end = true;
 					}
 					
 					// +==============================+
 					// |         Info Button          |
 					// +==============================+
 					if (ui.add_sized([40.0, 40.0],
-						CircleButton::new(self.infoIcon.clone()))
+						CircleButton::new(self.infoIcon.clone(), self.buttonBackground.clone(), self.buttonHighlight.clone()))
 						.clicked())
 					{
 						println!("You clicked the Info button!");
@@ -121,7 +135,7 @@ impl<'a> eframe::App for MyApp<'a>
 				});
 			});
 			
-			egui::ScrollArea::both()
+			main_scroll_area
 			.auto_shrink(false)
 			.show(ui, |ui|
 			{

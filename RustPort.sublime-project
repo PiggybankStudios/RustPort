@@ -9,8 +9,9 @@
 		},
 		{
 			"name": "egui",
-			"path": "D:\\gamedev\\crates\\egui-0.31.1",
+			"path": "..\\..\\crates\\egui-0.31.1",
 			"file_exclude_patterns": [
+				"Cargo.lock",
 				"Cargo.toml",
 				"*.orig",
 				".cargo_vcs_info.json",
@@ -22,8 +23,9 @@
 		},
 		{
 			"name": "eframe",
-			"path": "D:\\gamedev\\crates\\eframe-0.31.1",
+			"path": "..\\..\\crates\\eframe-0.31.1",
 			"file_exclude_patterns": [
+				"Cargo.lock",
 				"Cargo.toml",
 				"*.orig",
 				".cargo_vcs_info.json",
@@ -35,8 +37,23 @@
 		},
 		{
 			"name": "emath",
-			"path": "D:\\gamedev\\crates\\emath-0.31.1",
+			"path": "..\\..\\crates\\emath-0.31.1",
 			"file_exclude_patterns": [
+				"Cargo.lock",
+				"Cargo.toml",
+				"*.orig",
+				".cargo_vcs_info.json",
+			],
+			"folder_exclude_patterns": [
+				"data",
+				"target",
+			],
+		},
+		{
+			"name": "ecolor",
+			"path": "..\\..\\crates\\ecolor-0.31.1",
+			"file_exclude_patterns": [
+				"Cargo.lock",
 				"Cargo.toml",
 				"*.orig",
 				".cargo_vcs_info.json",
@@ -48,8 +65,9 @@
 		},
 		{
 			"name": "egui_extras",
-			"path": "D:\\gamedev\\crates\\egui_extras-0.31.1",
+			"path": "..\\..\\crates\\egui_extras-0.31.1",
 			"file_exclude_patterns": [
+				"Cargo.lock",
 				"Cargo.toml",
 				"*.orig",
 				".cargo_vcs_info.json",
@@ -58,6 +76,9 @@
 				"data",
 				"target",
 			],
+		},
+		{
+			"path": "..\\..\\crates\\ecolor-0.31.1"
 		},
 	],
 }
