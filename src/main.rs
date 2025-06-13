@@ -11,6 +11,8 @@ use eframe::egui::{Vec2, vec2};
 mod platform;
 use platform::com_port::EnumerateAvailableComPorts;
 mod resources;
+mod circle_button;
+use circle_button::CircleButton;
 
 const DEBUG_BUILD: bool = true;
 
@@ -81,7 +83,7 @@ impl<'a> eframe::App for MyApp<'a>
 					// |       Open COM Button        |
 					// +==============================+
 					if (ui.add_sized([40.0, 40.0],
-						egui::ImageButton::new(self.portIcon.clone()))
+						CircleButton::new(self.portIcon.clone()))
 						.clicked())
 					{
 						println!("You clicked the COM button!");
@@ -92,7 +94,7 @@ impl<'a> eframe::App for MyApp<'a>
 					// |       Settings Button        |
 					// +==============================+
 					if (ui.add_sized([40.0, 40.0],
-						egui::ImageButton::new(self.settingsIcon.clone()))
+						CircleButton::new(self.settingsIcon.clone()))
 						.clicked())
 					{
 						println!("You clicked the Settings button!");
@@ -102,7 +104,7 @@ impl<'a> eframe::App for MyApp<'a>
 					// |         Info Button          |
 					// +==============================+
 					if (ui.add_sized([40.0, 40.0],
-						egui::ImageButton::new(self.infoIcon.clone()))
+						CircleButton::new(self.infoIcon.clone()))
 						.clicked())
 					{
 						println!("You clicked the Info button!");

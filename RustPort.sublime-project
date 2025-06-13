@@ -9,16 +9,20 @@
 		},
 		{
 			"name": "egui",
-			"path": "..\\..\\crates\\egui-0.31.1",
+			"path": "D:\\gamedev\\crates\\egui-0.31.1",
 			"file_exclude_patterns": [
 				"Cargo.toml",
 				"*.orig",
 				".cargo_vcs_info.json",
+				"target",
+			],
+			"folder_exclude_patterns": [
+				"target",
 			],
 		},
 		{
 			"name": "eframe",
-			"path": "..\\..\\crates\\eframe-0.31.1",
+			"path": "D:\\gamedev\\crates\\eframe-0.31.1",
 			"file_exclude_patterns": [
 				"Cargo.toml",
 				"*.orig",
@@ -26,15 +30,33 @@
 			],
 			"folder_exclude_patterns": [
 				"data",
+				"target",
 			],
 		},
 		{
-			"name": "egui_extras",
-			"path": "..\\..\\crates\\egui_extras-0.31.1",
+			"name": "emath",
+			"path": "D:\\gamedev\\crates\\emath-0.31.1",
 			"file_exclude_patterns": [
 				"Cargo.toml",
 				"*.orig",
 				".cargo_vcs_info.json",
+			],
+			"folder_exclude_patterns": [
+				"data",
+				"target",
+			],
+		},
+		{
+			"name": "egui_extras",
+			"path": "D:\\gamedev\\crates\\egui_extras-0.31.1",
+			"file_exclude_patterns": [
+				"Cargo.toml",
+				"*.orig",
+				".cargo_vcs_info.json",
+			],
+			"folder_exclude_patterns": [
+				"data",
+				"target",
 			],
 		},
 	],
